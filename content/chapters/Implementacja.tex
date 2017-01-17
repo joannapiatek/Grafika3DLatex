@@ -12,9 +12,9 @@ Sterowanie postacią zostało zaimportowane z Standard Assets zawierających m.i
 \subsection{Wazon i jego rozbicie}
 W celu zademonstrowania możliwości interakcji i destrukcji otoczenia, w pomieszczeniu umieszczona została waza. Przy mocnym uderzeniu, upadku, rozpada się na mniejsze fragmenty, z którymi użytkownik może przeprowadzać dalszą interakcję.
 
-\subsubsection{Modelowanie}
+\subsubsection{Elementy}
 \paragraph{Waza}
-Waza została zamodelowania w środowisku \textit{blender}. Podstawowym kształtem dla wazy jest okrąg, z którego za pomocą narzędzia \textit{Extrude} i skalowania w prosty sposób można utworzyć symetryczne, owalne przedmioty. \\
+Waza została zamodelowania w środowisku \textit{Blender}. Podstawowym kształtem dla wazy jest okrąg, z którego za pomocą narzędzia \textit{Extrude} i skalowania w prosty sposób można utworzyć symetryczne, owalne przedmioty. \\
 Krawędzie utworzonego modelu zostały wygładzone za pomocą narzędzia \textit{Smooth} dostępnego w oprogramowaniu. 
 \paragraph{Fragmenty}
 Modele rozbitej wazy - zarówno całej, jak i już rozbitych elementów które podlegają dalszej destrukcji zostały również utworzone w narzędziu \textit{blender}.
@@ -24,9 +24,18 @@ W tym celu skorzystano z dodatkowego narzędzia \textit{Cell Fracture} dostępne
 Po zaimportowaniu modelu do \textit{Unity}, należy wygenerować \textit{collidery}, poprzez zaznaczenie opcji \textit{Generate Colliders} w Inspektorze modelu. Na poszczególnych fragmentach należy zaznaczyć opcję \textit{Convex} w komponencie \textbf{Mesh Collider} w celu umożliwienia wykrywania kolizji pomiędzy tymi obiektami. Aby zminimalizować odbicia obiektu od podłoża po upadku, materiał powinien byś ustawiony na materiał z małym współczynnikiem odbicia, np. metal. Następnie każdemu fragmentowi należy dodać komponent \textbf{RigidBody}, który daje możliwość ustawienia takich cech obiektu jak masa czy opory powietrza wpływające na zachowanie obiektu na scenie. Tak przygotowany obiekt w postaci \textit{prefabu} jest gotowy do użycia na scenie.
 
 \subsubsection{Skrypt}
-W celu symulacji zniszczenia obiektu w środowisku \textit{Unity}, konieczne jest przygotowanie modeli przed i po zniszczeniu. W momencie wykrycia działania na obiekt siły wystarczającej do jego zniszczenie, należy podmienić model na scenie. //
+W celu symulacji zniszczenia obiektu w środowisku \textit{Unity}, konieczne jest przygotowanie modeli przed i po zniszczeniu. W momencie wykrycia działania na obiekt siły wystarczającej do jego zniszczenie, należy podmienić model na scenie. \\
 Dla wazy został utworzony skrypt \textit{DesctrucibleVase.cs}, jeżeli w momencie kolizji z innym obiektem zostanie przekroczona uprzednio zdefiniowana wartość progowa, dynamicznie tworzona jest nowa instancji wazy posiadająca za model wazę zniszczoną. Następnie dla każdego fragmentu nowej fazy przypisywana jest rotacja i pęd istniejącego obiektu, po czym obiekt ten jest usuwany ze sceny i zastępowany nowo utworzonym. W ten sposób użytkownik nie widzi podmiany modelu, a jedynie efekt rozpadającej się na kawałki wazy. Ta sama technika może zostać wykorzystana przy dowolnym obiekcie w środowisku \textit{Unity}.
 
-\subsection{Świeczka}
+\subsection{Świeca}
+Kolejnym elementem prezentowanym na scenie jest świeca. Głównym powodem wyboru tego elementu była potrzeba zaprezentowania ognia, który jest umocowany na przesuwalnym obiekcie. Dzięki temu przesuwając święcę można zaobserwować ruchy płomienia.
 
+\subsubsection{Elementy}
+\paragraph{Wosk}
+Model części woskowej został stworzony w programie \textit{Blender}. 
+c d n....................
 
+\paragraph{Płomień}
+Płomień świecy został utworzony w całości w środowisku \textit{Unity}. Do tego celu wykorzystano gotowy element \textit{Particle System}, czyli system cząsteczek. Domyślna konfiguracja tego komponentu nie przypomina ognia, lecz rozproszone cząstki wydobywające się z danego miejsca. Należało więc zmienić właściwości elementu, takie jak prędkość ruchu cząstek, ich maksymalna ilość, kształt grupy cząstek w trakcie cyklu życia czy ich barwa. Płomień został dodany jako podelement do woskowej części świecy, by poruszał się razem z nią.
+
+\paragraph{Źródło światła}
