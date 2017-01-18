@@ -1,23 +1,52 @@
 \section{Implementacja projektu}
 
-\subsection{Definicja sterowania}
+\subsection{Świat}
+Świat widoczny na scenie zaprojektowany został z wykorzystaniem narzędzia „World Machine”. Narzędzie to pozwoliło na zaprojektowanie własnego terenu, który następnie został zaimportowany do Unity jako mapa wysokości. 
+\paragraph{Zalesienie Świata}
+\mbox{}\\
+Zalesienie świata (tekstury ziemi, trawa i drzewa) zostały ręcznie naniesione z wykorzystaniem modeli pochodzących z Assetu „World Builder”. 
+\paragraph{Ocean}
+\mbox{}\\
+Ocean został zaimportowany z paczki Unity Standar Assets (Basic Water) i naniesiony na scenę. 
+
+\subsection{Pokój}
+Model pokoju stworzony został w narzędziu Blender. Model ten jest sześcianem o odwróconych normalnych ścian, co pozwoliło na oświetlenie jego wnętrza. W modelu tym wycięte zostało miejsce na okno, oraz został on podzielony na części przygotowane do nałożenia tekstury.
+
+\subsection{Biurko i okno}
+Modele biurka i okna zostały stworzone z wykorzystaniem narzędzia Blender.
+
+\paragraph{Biurko}
+\mbox{}\\
+Biurko zawiera w sobie odpowiednio zeskalowane i połączone sześciany i bryły. Biurko posiada elementy stylistyczne wykonane przy pomocy narzędzia \textit{Extrude}.
+\paragraph{Okno}
+\mbox{}\\
+Okno zawiera w sobie modele szyby oraz ramki, która ją podtrzymuje. Przeźroczystość szyby uzyskana została poprzez zastosowanie odpowiedniego materiału „Transparent/Diffuse” w Unity
+
+\subsection{Zasłony}
+Model zasłony utworzony został w narzędziu Blender wykorzystując do tego gotową powierzchnię, zmodyfikowaną tak by wyglądała jak delikatny materiał. Model ten został zaimportowany do Unity, gdzie przypisano do niego odpowiednie parametry fizyki (\textit{Cloth physics}). \\
+Zastosowanie zasłon wymagało utworzenia zestawu colliderów w postaci kapsuł, dzięki czemu możliwa była interakcja firany z obiektami takimi jak kij, piłka czy postać.
 
 \subsection{Sterowanie postacią}
-Sterowanie postacią zostało zaimportowane z Standard Assets zawierających m.in. moduł FirstPersonCharacter, w którym zostało zdefiniowane całe sterowanie postacią: kiwanie się kamery przy chodzeniu, dźwięki kroków, postać w kształcie kapsuły, itp.
+Sterowanie postacią zostało zaimportowane z paczki Unity Standard Assets zawierających m.in. moduł FirstPersonCharacter posiadający gotowe skrypty upraszczające takie elementy jak poruszanie się postaci, obrót, skok. Asset ten posiada również ścieżkę dźwiękową zawierającą odgłosy kroków.
 
 \subsection{Poruszanie kijem}
+Element poruszania kijem został zaimplementowany poprzez modyfikację skryptu poruszania kamerą zawartego w assecie \textit{FirstPersonCharacter}. Modyfikacja ta pozwoliła na poruszanie kija względem położenia obserwatora – kij znajduje się przed nim, w odpowiedniej odległości, pod odpowiednim kątem. \\
+Poruszanie kijem niezależnie od kamery obserwatora polegało na translacji położenia kija względem położenia obserwatora, a następnie jego rotację.
 
 \subsection{Piłka}
+Model piłki utworzony został bezpośrednio w Unity jako gotowy obiekt sfery. Do obiektu dołączony został model odpowiadający za fizykę materiału. Model ten został wygenerowany w Unity, następnie został zmodyfikowany by lepiej oddawać właściwości fizyczne piłki. Piłka posiada specjalnie przygotowaną teksturę imitującą rzeczywisty wygląd piłki do gry w koszykówkę.
 
 \subsection{Wazon i jego rozbicie}
 W celu zademonstrowania możliwości interakcji i destrukcji otoczenia, w pomieszczeniu umieszczona została waza. Przy mocnym uderzeniu, upadku, rozpada się na mniejsze fragmenty, z którymi użytkownik może przeprowadzać dalszą interakcję.
 
 \subsubsection{Elementy}
 \paragraph{Waza}
+\mbox{}\\
 Waza została zamodelowania w środowisku \textit{Blender}. Podstawowym kształtem dla wazy jest okrąg, z którego za pomocą narzędzia \textit{Extrude} i skalowania w prosty sposób można utworzyć symetryczne, owalne przedmioty. \\
 Krawędzie utworzonego modelu zostały wygładzone za pomocą narzędzia \textit{Smooth} dostępnego w oprogramowaniu. 
 \paragraph{Fragmenty}
-Modele rozbitej wazy - zarówno całej, jak i już rozbitych elementów które podlegają dalszej destrukcji zostały również utworzone w narzędziu \textit{blender}.
+\mbox{}\\
+Modele rozbitej wazy - zarówno całej, jak i już rozbitych elementów które podlegają dalszej destrukcji zostały również utworzone w narzędziu \textit{Blender}.
 W tym celu skorzystano z dodatkowego narzędzia \textit{Cell Fracture} dostępnego dla \textit{blendera}. Dodatek ten pozwala na podział utworzonego modelu na  \textit{n} fragmentów za pomocą tesselacji Woronoja. Środki obszarów mogą zostać wygenerowane automatycznie, lub zostać wybrane przez użytkownika. Korzystając z narzędzia \textit{Cell Fracture} użytkownik ma do dyspozycji szereg opcji, m.in. wybór maksymalnej liczby fragmentów na które zostanie podzielony model, czy wielkość odstępu pomiędzy nowo utworzonymi fragmentami. Z jednej strony pogarsza to wizualne wrażenia przy rozbiciu przedmiotu, jednakże pozwala ograniczyć ryzyko "wybuchu" szczątków na wskutek błędu silnika fizycznego. Ma to szczególnie duże znaczenie przy podziale modelu na kilkadziesiąt lub kilkaset fragmentów.
 
 \subsubsection{Import do środowiska Unity}
@@ -32,10 +61,12 @@ Kolejnym elementem prezentowanym na scenie jest świeca. Głównym powodem wybor
 
 \subsubsection{Elementy}
 \paragraph{Wosk}
+\mbox{}\\
 Model części woskowej został stworzony w programie \textit{Blender}. 
 c d n....................
 
 \paragraph{Płomień}
+\mbox{}\\
 Płomień świecy został utworzony w całości w środowisku \textit{Unity}. Do tego celu wykorzystano gotowy element \textit{Particle System}, czyli system cząsteczek. Domyślna konfiguracja tego komponentu nie przypomina ognia, lecz rozproszone cząstki wydobywające się z danego miejsca. Należało więc zmienić właściwości elementu, takie jak prędkość ruchu cząstek, ich maksymalna ilość, kształt grupy cząstek w trakcie cyklu życia czy ich barwa. Płomień został dodany jako podelement do woskowej części świecy, by poruszał się razem z nią.
 
 \paragraph{Źródło światła}
