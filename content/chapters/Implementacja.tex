@@ -62,11 +62,24 @@ Kolejnym elementem prezentowanym na scenie jest świeca. Głównym powodem wybor
 \subsubsection{Elementy}
 \paragraph{Wosk}
 \mbox{}\\
-Model części woskowej został stworzony w programie \textit{Blender}. 
-c d n....................
+Model części woskowej został stworzony w programie \textit{Blender}. Do tego celu wykorzystano gotowy element \textit{Cylinder}, którego górny fragment został zmodyfikowany tak, by przypomiał roztopiony wosk. Bardzo pomocna okazała się tu opcja \textit{Proportional Edit}, dzięki której wystarczyło zaznaczyć jeden punkt na siatce obiektu, a po jego przesunięciu pobliskie punkty podążały w tym samym kierunku. Kolejnym krokiem było dodanie knotu świecy. Został on wykonowany z elementu \textit{Cylinder} ukształtowanego następnie za pomocą narzędzia \textit{Extrude}.
 
 \paragraph{Płomień}
 \mbox{}\\
 Płomień świecy został utworzony w całości w środowisku \textit{Unity}. Do tego celu wykorzystano gotowy element \textit{Particle System}, czyli system cząsteczek. Domyślna konfiguracja tego komponentu nie przypomina ognia, lecz rozproszone cząstki wydobywające się z danego miejsca. Należało więc zmienić właściwości elementu, takie jak prędkość ruchu cząstek, ich maksymalna ilość, kształt grupy cząstek w trakcie cyklu życia czy ich barwa. Płomień został dodany jako podelement do woskowej części świecy, by poruszał się razem z nią.
 
 \paragraph{Źródło światła}
+\mbox{}\\
+W celu nadania płomieniowi realnego wyglądu zostało do niego dodane punktowe źródło światła. Jest ono gotowym elementem dostępnym w środowisku \textit{Unity}.
+
+\subsubsection{Import do środowiska Unity}
+Po stworzeniu modelu wosku należy zaimportować go do środowiska \textit{Unity}. Następnie konieczne jest wygenerowanie \textit{colliderów} w taki sam sposób, w jaki odbyło się to dla wazy. Należy dodać także komponent \textbf{RigidBody} odzwierciedlający cechy fizyczne obiektu. Jak wspomniano wcześniej, utworzone w \textit{Unity} elementy - płomień i światło - trzeba umocować na części woskowej tak, by stanowiły razem tzw. \textit{prefab}, gotowy do ponownego użycia w programie.
+
+\subsubsection{Skrypty}
+Żeby osiągnąć pożądane zachowanie płomienia należało zadbać o następujące kwestie:
+\begin{itemize}
+	\item w trakcie przesuwania świecy ogień powinien pochylać się w przeciwnym kierunku,
+	\item moc światła powinna odzwierciedlać ilość cząsteczek płomienia.
+\end{itemize}
+Pierwsze zagadnienie rozwiązano za pomocą skryptu \textit{FlameBehaviourScript.cs}. Dzięki dodaniu w \textit{Unity} elementu \textbf{Rigidbody} możliwe jest pobranie aktualnej prędkości woskowej, niezmiennej części świecy.  Na jej podstawie obliczany jest wektor prędkości, który powinien zadziałać na cząstki płomienia. Zostały tutaj uwzględnione także sytuacje, kiedy obiekt zostanie przesunięty ze zbyt dużą szybkością lub przewróci się. W takiej sytuacji ogień gaśnie.
+Kolejny skrypt - \textit{CandleLightBehaviour.cs} zapewnia odpowiednią moc światła. Na bieżąco sprawdzana jest liczba aktualnie "żyjących" cząstek płomienia. Następnie obliczany jest jej stosunek do ich ilości maksymalnej. Taki ułamek zostaje przemnożony przez początkową, ustaloną moc. Dodatkowo, kiedy płomień gaśnie, światło zostaje wyłączone.
